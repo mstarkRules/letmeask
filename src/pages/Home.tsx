@@ -21,7 +21,7 @@ export function Home() {
       await signInWithGoogle();
     }
 
-    //rota só vai acontecer caso o sign in seja sucesso
+    //rota só vai ser redicionada caso o sign in seja sucesso
     history.push("/rooms/new");
   }
 
