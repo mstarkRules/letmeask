@@ -11,11 +11,13 @@ import { useAuth } from "../hooks/useAuth";
 export function Home() {
   const history = useHistory();
   const { signInWithGoogle, user } = useAuth();
+
   async function handleCreateRoom() {
     if (!user) {
       await signInWithGoogle();
     }
 
+    //rota só vai acontecer caso o sign in seja sucesso
     history.push("/rooms/new");
   }
 
@@ -37,7 +39,7 @@ export function Home() {
             Crie sua sala com o Google
           </button>
           <div className="separator">ou entre em uma sala</div>
-          <form action="">
+          <form>
             <input type="" placeholder="Digite o código da sala" />
             <Button type="submit">Entrar na sala</Button>
           </form>
