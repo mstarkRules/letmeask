@@ -8,6 +8,10 @@
   cursor: pointer;
 
   display: flex;
+  transition: filter(0.02s);
+  :hover {
+    filter: brightness(0.9);
+  }
 
   div {
     background: #835afd;
