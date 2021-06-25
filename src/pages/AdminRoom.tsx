@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import Modal from "react-modal";
+import { Fragment } from "react";
 
 import logoImg from "../assets/images/logo.svg";
 import deleteImg from "../assets/images/delete.svg";
@@ -28,12 +30,16 @@ export function AdminRoom() {
   const [newQuestion, setNewQuestion] = useState("");
   const roomId = params.id;
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const { title, questions } = useRoom(roomId);
 
   async function handleDeleteQuestion(questionId: string) {
+    setIsModalVisible(true);
     if (window.confirm("Tem certeza que deseja excluir a pergunta?")) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
     }
+
+    setIsModalVisible(false);
   }
 
   async function handleCheckQuestionAsAnswered(questionId: string) {
@@ -79,37 +85,48 @@ export function AdminRoom() {
         <div className="question-list">
           {questions.map((question) => {
             return (
-              <Question
-                key={question.id}
-                content={question.content}
-                author={question.author}
-                isAnswered={question.isAnswered}
-                isHighlighted={question.isHighlighted}
-              >
-                {!question.isAnswered && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => handleCheckQuestionAsAnswered(question.id)}
-                    >
-                      <img src={checkImg} alt="Marcar como respondida " />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleHighlightQuestion(question.id)}
-                    >
-                      <img src={answerImg} alt="Dar desetaque à pergunta" />
-                    </button>
-                  </>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => handleDeleteQuestion(question.id)}
+              <Fragment key={question.id}>
+                <Question
+                  content={question.content}
+                  author={question.author}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
                 >
-                  <img src={deleteImg} alt="Remover pergunta" />
-                </button>
-              </Question>
+                  {!question.isAnswered && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCheckQuestionAsAnswered(question.id)
+                        }
+                      >
+                        <img src={checkImg} alt="Marcar como respondida " />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleHighlightQuestion(question.id)}
+                      >
+                        <img src={answerImg} alt="Dar desetaque à pergunta" />
+                      </button>
+                    </>
+                  )}
+
+                  <button type="button" onClick={() => setIsModalVisible(true)}>
+                    <img src={deleteImg} alt="Remover pergunta" />
+                  </button>
+                </Question>
+                <Modal
+                  isOpen={isModalVisible}
+                  onRequestClose={() => setIsModalVisible(false)}
+                >
+                  <button onClick={() => handleDeleteQuestion(question.id)}>
+                    Deletar
+                  </button>
+                  <button onClick={() => setIsModalVisible(false)}>
+                    Fechar
+                  </button>
+                </Modal>
+              </Fragment>
             );
           })}
         </div>
