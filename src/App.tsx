@@ -4,7 +4,7 @@ import { NewRoom } from "./pages/NewRoom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { AuthContextProvider } from "./contexts/AuthContext";
-import { Room } from "./pages/Rooms";
+import { Room } from "./pages/Room";
 import { ThemeContextProvider } from "./contexts/ThemeContext";
 import { AdminRoom } from "./pages/AdminRoom";
 

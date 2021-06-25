@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { FormEvent } from "react";
-import { History } from "history";
 
 import logoImg from "../assets/images/logo.svg";
+import deleteImg from "../assets/images/delete.svg";
 import { Button } from "../components/Button";
 import { RoomCode } from "../components/RoomCode";
 import { Question } from "../components/Question/index";
@@ -28,35 +27,17 @@ export function AdminRoom() {
 
   const { title, questions } = useRoom(roomId);
 
+  async function handleDeleteQuestion(questionId: string) {
+    if (window.confirm("Tem certeza que deseja excluir a pergunta?")) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).remove();
+    }
+  }
+
   useEffect(() => {
     if (!user) {
       history.push("/");
     }
   }, [user, history]);
-
-  async function handleSendQuestion(event: FormEvent) {
-    event.preventDefault();
-    if (newQuestion.trim() == "") {
-      return;
-    }
-    if (!user) {
-      throw new Error("You must be logged in");
-    }
-
-    const question = {
-      content: newQuestion,
-      author: {
-        name: user.name,
-        avatar: user.avatar,
-      },
-      isHighlighted: false,
-      isAnswered: false,
-    };
-
-    await database.ref(`rooms/${roomId}/questions`).push(question);
-
-    setNewQuestion("");
-  }
 
   return (
     <div id="page-room">
@@ -83,7 +64,14 @@ export function AdminRoom() {
                 key={question.id}
                 content={question.content}
                 author={question.author}
-              />
+              >
+                <button
+                  type="button"
+                  onClick={() => handleDeleteQuestion(question.id)}
+                >
+                  <img src={deleteImg} alt="Remover pergunta" />
+                </button>
+              </Question>
             );
           })}
         </div>
