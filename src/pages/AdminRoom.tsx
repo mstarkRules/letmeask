@@ -33,11 +33,13 @@ export function AdminRoom() {
     }
   }
 
-  useEffect(() => {
-    if (!user) {
-      history.push("/");
-    }
-  }, [user, history]);
+  async function handleEndRoom() {
+    await database.ref(`rooms/${roomId}`).update({
+      endedAt: new Date(),
+    });
+
+    history.push("/");
+  }
 
   return (
     <div id="page-room">
@@ -46,7 +48,9 @@ export function AdminRoom() {
           <img src={logoImg} alt="Letmeask" />
           <div>
             <RoomCode code={roomId} />
-            <Button isOutlined>Encerrar Sala</Button>
+            <Button isOutlined onClick={handleEndRoom}>
+              Encerrar Sala
+            </Button>
           </div>
         </div>
       </header>
