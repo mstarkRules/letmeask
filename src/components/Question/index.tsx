@@ -1,4 +1,6 @@
 import { ReactNode } from "react";
+import classnames from "classnames";
+
 import "./styles.scss";
 
 type QuestionProps = {
@@ -21,9 +23,17 @@ export function Question({
 }: QuestionProps) {
   return (
     <div
+      /*em vez de a gente faze esse ternario pro nome das classes
+      podemos utilizar o classnames
       className={`question ${isAnswered ? "answred" : ""} ${
         isHighlighted ? "highlighted" : ""
       }`}
+      */
+      className={classnames(
+        "question",
+        { answered: isAnswered },
+        { highlighted: isHighlighted && !isAnswered }
+      )}
     >
       <p>{content}</p>
       <footer>
