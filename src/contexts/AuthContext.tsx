@@ -1,9 +1,12 @@
 import firebase from "firebase";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { auth } from "../services/firebase";
+import { useHistory } from "react-router-dom";
 
 type AuthContextType = {
   user: User | undefined;
+  loading: boolean;
+  handleSetLoading: (valor: boolean) => void;
   signInWithGoogle: () => Promise<void>;
 };
 
@@ -21,7 +24,8 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -43,6 +47,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       unsubscribe();
     };
   }, []);
+
+  async function handleSetLoading(valor: boolean) {
+    console.log("o valor é: ", valor);
+  }
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -67,7 +75,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+    <AuthContext.Provider
+      value={{ signInWithGoogle, user, loading, handleSetLoading }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

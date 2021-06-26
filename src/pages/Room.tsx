@@ -20,7 +20,7 @@ type RoomParams = {
 };
 
 export function Room() {
-  const { user } = useAuth();
+  const { user, signInWithGoogle } = useAuth();
   const history = useHistory();
   const params = useParams<RoomParams>();
   const [newQuestion, setNewQuestion] = useState("");
@@ -28,11 +28,7 @@ export function Room() {
 
   const { title, questions } = useRoom(roomId);
 
-  useEffect(() => {
-    if (!user) {
-      history.push("/");
-    }
-  }, [user, history]);
+  useEffect(() => {}, [user, history]);
 
   async function handleSendQuestion(event: FormEvent) {
     event.preventDefault();
@@ -78,7 +74,7 @@ export function Room() {
     <div id="page-room">
       <header>
         <div className="content">
-          <img src={logoImg} alt="Letmeask" />
+          <img onClick={() => history.push("/")} src={logoImg} alt="Letmeask" />
           <RoomCode code={roomId} />
         </div>
       </header>
@@ -94,6 +90,7 @@ export function Room() {
             placeholder="O que você quer perguntar?"
             onChange={(event) => setNewQuestion(event.target.value)}
             value={newQuestion}
+            disabled={!user}
           />
           <div className="form-footer">
             {user ? (
@@ -103,7 +100,10 @@ export function Room() {
               </div>
             ) : (
               <span>
-                Para enviar uma pergunta, <button>faça seu login</button>
+                Para enviar uma pergunta,{" "}
+                <button onClick={() => signInWithGoogle()}>
+                  faça seu login
+                </button>
               </span>
             )}
             <Button type="submit" disabled={!user}>

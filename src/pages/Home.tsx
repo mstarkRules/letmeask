@@ -11,13 +11,18 @@ import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import { database } from "../services/firebase";
 import { useTheme } from "../hooks/useTheme";
+import { useEffect } from "react";
 
 export function Home() {
   const history = useHistory();
-  const { user, signInWithGoogle } = useAuth();
+  const { user, signInWithGoogle, handleSetLoading } = useAuth();
   const [roomCode, setRoomCode] = useState("");
 
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    console.log("oi");
+  }, []);
 
   async function handleCreateRoom() {
     if (!user) {
