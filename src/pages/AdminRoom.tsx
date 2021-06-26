@@ -81,7 +81,7 @@ export function AdminRoom() {
           <h1>Sala {title}</h1>
           {questions.length > 0 && <span>{questions.length} pergunta(s) </span>}
         </div>
-
+        {!(questions.length > 0) && <div>As perguntas aparecerão aqui</div>}
         <div className="question-list">
           {questions.map((question) => {
             return (

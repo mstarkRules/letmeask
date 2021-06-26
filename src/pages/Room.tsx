@@ -113,6 +113,7 @@ export function Room() {
         </form>
 
         <div className="question-list">
+          {!(questions.length > 0) && <div>As perguntas aparecerão aqui</div>}
           {questions.map((question) => {
             return (
               <Question
