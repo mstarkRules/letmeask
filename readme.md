@@ -45,5 +45,5 @@ As seguintes ferramentas foram usadas na construção deste projeto:
 <li>Clone o projeto para uma pasta sua com o comando: <code>git clone https://github.com/mstarkRules/letmeask.git<code> </li>
 
 <li>Instale as dependências com o NPM <code>npm install</code> ou YARN <code>yarn</code></li>
-<li>Inicie o projeto com <code>yarn start</code> ou <code>npm run dev</code> </li>
+<li>Inicie o projeto com <code>yarn start</code> ou <code>npm run dev</code></li>
 <li>Ou você pode acessar o endereço onde web app foi hospedado no firebase https://letmeask-8c2a3.web.app/</li>
